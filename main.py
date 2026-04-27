@@ -1,3 +1,8 @@
+import os  
+API_ID = int(os.environ["API_ID"])  
+API_HASH = os.environ["API_HASH"]  
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+
 async def frwd(dest_chat_id, msg, user_id: int = None) -> str:
 try:
 if not msg or msg.empty:
