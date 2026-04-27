@@ -7,9 +7,9 @@ from pyrogram.errors import FloodWait, ChatAdminRequired, ChannelPrivate
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
-API_ID = int(os.getenv("API_ID"))
-API_HASH = os.getenv("API_HASH")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+API_ID = int(os.getenv("32437437"))
+API_HASH = os.getenv("2219317b5d0e36cef93513c14d9ecebe")
+BOT_TOKEN = os.getenv("8626002432:AAFz4QG5D8IXRoJL5X4KJxLRWlgfx9jLutE")
 
 app = Client("bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
