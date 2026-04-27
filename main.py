@@ -7,9 +7,10 @@ from pyrogram.errors import FloodWait, ChatAdminRequired, ChannelPrivate
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
-API_ID = int(os.getenv("32437437"))
-API_HASH = os.getenv("2219317b5d0e36cef93513c14d9ecebe")
-BOT_TOKEN = os.getenv("8626002432:AAFz4QG5D8IXRoJL5X4KJxLRWlgfx9jLutE")
+# ✅ CORRECT ENV VARIABLES
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 app = Client("bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -26,14 +27,13 @@ def get_readable_file_size(size):
 
 USER_CAPTIONS = {}
 
-# ====== YOUR FUNCTION (FIXED) ======
+# ====== FORWARD FUNCTION ======
 async def frwd(dest_chat_id, msg, user_id: int = None) -> str:
     try:
         if not msg or msg.empty:
             return "skipped"
 
         filters_map = get_user_filters(user_id)
-
         kwargs = {"chat_id": dest_chat_id, "disable_notification": True}
 
         def resolve_caption(media_obj):
@@ -42,8 +42,7 @@ async def frwd(dest_chat_id, msg, user_id: int = None) -> str:
                 return msg.caption, msg.caption_entities
             file_name = getattr(media_obj, "file_name", None) or "file"
             file_size = get_readable_file_size(getattr(media_obj, "file_size", 0))
-            caption_text = template.replace("{file_name}", file_name).replace("{file_size}", file_size)
-            return caption_text, None
+            return template.replace("{file_name}", file_name).replace("{file_size}", file_size), None
 
         if msg.text:
             if not filters_map["Text"]:
@@ -106,7 +105,7 @@ async def frwd(dest_chat_id, msg, user_id: int = None) -> str:
     except FloodWait as f:
         LOGGER.warning(f"FloodWait {f.value}s")
         await asyncio.sleep(f.value + 2)
-        return await frwd(dest_chat_id, msg, user_id)  # FIXED
+        return await frwd(dest_chat_id, msg, user_id)  # ✅ fixed retry
     except Exception as e:
         return f"error:{e}"
 
@@ -115,8 +114,7 @@ async def frwd(dest_chat_id, msg, user_id: int = None) -> str:
 async def start(_, message):
     await message.reply_text("Bot Running ✅")
 
-# ====== AUTO FORWARD EXAMPLE ======
-# Replace SOURCE_CHAT_ID and DEST_CHAT_ID with your IDs
+# ====== AUTO FORWARD ======
 SOURCE_CHAT_ID = int(os.getenv("SOURCE_CHAT_ID", "0"))
 DEST_CHAT_ID = int(os.getenv("DEST_CHAT_ID", "0"))
 
